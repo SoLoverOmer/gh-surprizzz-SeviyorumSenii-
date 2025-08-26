@@ -18,10 +18,10 @@
             justify-content: center;
             align-items: center;
             font-family: 'Pacifico', sans-serif;
-            background-color: #000; /* Başlangıç rengi siyah */
+            background-color: #000;
             user-select: none;
             flex-direction: column;
-            transition: background-color 0.5s ease-in-out; /* Renk geçişi için animasyon */
+            transition: background-color 0.5s ease-in-out;
         }
 
         .background-image-container {
@@ -410,7 +410,7 @@
                 document.body.style.display = "flex";
             } else {
                 alert("Yanlış şifre! Lütfen tekrar deneyin.");
-                window.location.reload(); 
+                window.location.reload();
             }
         }
     </script>
@@ -435,9 +435,7 @@
         <button class="close-button" id="closeButton">X</button>
         <div class="message-content">
             <p>
-                Doğum günün kutlu olsun kurban olduğum gülüşü güzel sana ve bebekliğine kurban olayım çok güzel gülmüşsün oyoyoy MAŞALLAAAAH. Senin için gerçekten ne zahmet ne bir an yorulmak, sana bir şey yaparken o sevgin aşkın bana şifa oluyor.
- Gerçekten Kurban olduğum sen benim bedenimin ruhumun parçasısın Allah seni benden beni senden bizi ondan ayırmasın. Seviyorum Seni Elhamdulillah. Allah yokluğunu göstermesin sana kavuşmayı nasip etsin Amin. Tüm günüm yorgun bitkin olsa, bu kod işleri beni hiç yormadı biliyor musun 9 saat aralıksız sürdü ilk aşamalar yine kısa sürdü açıkcası olur mu bilmiyordum ama Elhamdulillah Allah nasip etti olduruverdi Elhamdulillah. Cennetsin sen bana, bakışında buldum sevgime sevda, sevginde buldum kendim.
- Mecazi bir aşkı gel Hakka çevirelim. Koyma beni senden gayrı sevgini ver her zaman, ayırma beni, bizi. Ne olur Yarabbi kavuştur bizi. Elhamdulillah diyelim o gün bu yaşlarda bunları yapardık diyelim hayalini kurduğumuz günleri yaşat bize Ey ALLAH'IM ne olur YARABBİM AMİN. Diyelimki Yarabbi Elhamdulillah bizi tanıştıran Allah'a hamdolsun. Elhamdulillah ELhamdulillah Elhamdulillah Ya Rabbi Elhamdulilah. Biriciğim sevdam sevdiğim güzelim yarim Kurban olduğum Tuanama 💞💞💞💓💕💗💖❣  
+                Doğum gününü tüm varlığımla kutluyorum Elhamdulillah. Her doğum gününde yanında olmayı çok isterim. Beraber büyümeyi, birbirimizi hiç bırakmadan sevmeyi, gerçektende küçük yaşta olan sevgiyi geleceğimize bir hazine olarak sabredip kavuşmayı çok istiyorum hem senden hem Allah'tan. Çocuksumu geliyor yazdıklarım bilmiyorum, çok fena seviyorum belki de bu sevda sevgi aşk beni deli divane etti. Çok memnunum seni sevmekten, sevgini görmekten, en mutlu olduğum sevgilerden biri senin sevgin. Bu hayatta beni kimse sevmesin bir tek sen sev bana yeter.Hayatımın en güzel hediyesi sensin, varlığına her zaman şükür ediyorum. Allah beni senden ayırmasın. Beni sevdiğime yani sana bağışlasın. Bugün 24 ağustos sen arabadasın Amasya'dan geliyorsun ve şu an uyuyorsun. Seviyoruummm Seniii. Gerçekten de seviyorum seni. Bana sevgi emek ister zaman ister demiştin. Varım yoğum ömrüm sana aşkına sevgine feda olsun. Allah aramıza kendi sevgisini versin sevgimizi sonsuz kılsın Âmin. Sevgine boğ beni kaçmam, İster sık sıkabildiğince korkmam, Seven sevdiğine kurban olsun sen yeter ki sev Yazacaklarım buraya sığmaz ama ben seni yüreğime yazdım istediğin zaman gel bu kalp senin. Sana olan sevdamı oku biriciğim sevdiğim yarim Kurban olduğum Tuanama 💞💞💞💓💕💗💖❣  
             </p>
         </div>
     </div>
@@ -603,7 +601,8 @@
 
         function createHeartVolcano() {
             heartVolcanoInterval = setInterval(() => {
-                for (let i = 0; i < 5; i++) {
+                // Kalp miktarını 5'ten 3'e düşürdük
+                for (let i = 0; i < 3; i++) {
                     const heart = document.createElement('span');
                     heart.classList.add('volcano-heart');
                     heart.innerHTML = hearts[(Math.floor(Math.random() * hearts.length))];
@@ -665,7 +664,8 @@
         }
 
         function createFinalExplosion(xPos, yPos) {
-            const explosionCount = 300;
+            // Patlama miktarını 300'den 50'ye düşürdük
+            const explosionCount = 50;
             for (let i = 0; i < explosionCount; i++) {
                 const explosionHeart = document.createElement('span');
                 explosionHeart.classList.add('explosion-particle');
@@ -702,7 +702,7 @@
             const centerX = heartRect.left + heartRect.width / 2;
             const centerY = heartRect.top + heartRect.height / 2;
 
-            if (randomNumber < 0.5) { 
+            if (randomNumber < 0.5) {
                 loveMessage.style.left = `${centerX}px`;
                 loveMessage.style.top = `${centerY}px`;
                 loveMessage.classList.add('show');
@@ -717,7 +717,8 @@
         }
 
         function createHeartBubbles(x, y) {
-            for (let i = 0; i < 10; i++) {
+            // Kalp miktarını 10'dan 5'e düşürdük
+            for (let i = 0; i < 5; i++) {
                 const bubble = document.createElement('div');
                 bubble.classList.add('heart-bubble');
                 bubble.innerHTML = '❤️';
@@ -731,7 +732,8 @@
         }
 
         function createMiniHeartExplosion(x, y) {
-            for (let i = 0; i < 20; i++) {
+            // Kalp miktarını 20'den 10'a düşürdük
+            for (let i = 0; i < 10; i++) {
                 const miniHeart = document.createElement('div');
                 miniHeart.classList.add('mini-heart');
                 miniHeart.innerHTML = '❤️';
@@ -751,7 +753,8 @@
         }
 
         function createBigHeartExplosion(x, y) {
-            for (let i = 0; i < 15; i++) {
+            // Kalp miktarını 15'ten 8'e düşürdük
+            for (let i = 0; i < 8; i++) {
                 const bigHeart = document.createElement('div');
                 bigHeart.classList.add('big-explosion-heart');
                 bigHeart.innerHTML = '❤️';
@@ -771,7 +774,4 @@
         }
     </script>
 </body>
-
 </html>
-
-
