@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuanam'a Sürpriz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+        body, html {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Pacifico', sans-serif;
+            background-color: #000; /* Başlangıç rengi siyah */
+            user-select: none;
+            flex-direction: column;
+            transition: background-color 0.5s ease-in-out; /* Renk geçişi için animasyon */
+        }
+
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('suprizzz.JPEG');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            z-index: -1;
+            transition: opacity 2s ease-in-out;
+            opacity: 0;
+        }
+
+        .background-image-container.visible {
+            opacity: 1;
+        }
+
+        .expand-box {
+            width: 150px;
+            height: 100px;
+            background: linear-gradient(135deg, #FF69B4, #8A2BE2);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            position: relative;
+            z-index: 1000;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Dancing Script', sans-serif;
+            user-select: none;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.6), 0 0 20px rgba(138, 43, 226, 0.6);
+            animation: glow-all-directions 2s infinite alternate;
+            margin-top: 50px;
+        }
+
+        @keyframes glow-all-directions {
+            0% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.6), 0 0 20px rgba(138, 43, 226, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 1), 0 0 40px rgba(138, 43, 226, 1); }
+            100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.6), 0 0 20px rgba(138, 43, 226, 0.6); }
+        }
+
+        .message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 2s;
+            color: white;
+            z-index: 10;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            text-align: center;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: 'Parisienne', cursive;
+            user-select: none;
+        }
+
+        .message-container.visible {
+            opacity: 1;
+        }
+
+        .message-heart {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .message-heart:hover {
+            transform: scale(1.1);
+        }
+
+        .message-heart.sparkle {
+            animation: sparkle 0.5s ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0% { text-shadow: none; transform: scale(1); }
+            50% { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; transform: scale(1.2); }
+            100% { text-shadow: none; transform: scale(1); }
+        }
+
+        .envelope {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background-color: #f7e7e7;
+            border: 2px solid #ff69b4;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: #d62c9d;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .envelope.visible {
+            opacity: 1;
+            animation: envelope-drop 1s ease-in-out forwards;
+        }
+
+        @keyframes envelope-drop {
+            0% { top: -100px; }
+            100% { top: 60%; transform: translateX(-50%) translateY(-50%); }
+        }
+
+        .message-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .message-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .message-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            text-align: center;
+            color: #C71585;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: #C71585;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 25px;
+            animation: fall 5s linear infinite;
+            opacity: 0;
+            z-index: 1;
+            top: -30vh;
+        }
+
+        .particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 2rem;
+            animation: explode 0.8s ease-out forwards;
+        }
+
+        .heart-side {
+            position: absolute;
+            font-size: clamp(50px, 15vw, 150px);
+            opacity: 0;
+            z-index: 5;
+            animation: rotate-and-pulse 2s infinite ease-in-out, side-heart-sway 1.5s infinite ease-in-out;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .heart-side.visible {
+            animation: side-heart-show 2s forwards, rotate-and-pulse 2s infinite ease-in-out, side-heart-sway 1.5s infinite ease-in-out;
+        }
+
+        .heart-side:active {
+            transform: scale(1.1);
+        }
+
+        .heart-side-left {
+            left: 5%;
+            top: 50%;
+        }
+
+        .heart-side-right {
+            right: 5%;
+            top: 50%;
+        }
+
+        @keyframes side-heart-sway {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            25% { transform: translateY(-50%) rotate(-10deg); }
+            75% { transform: translateY(-50%) rotate(10deg); }
+            100% { transform: translateY(-50%) rotate(0deg); }
+        }
+
+        @keyframes side-heart-show {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #main-heart {
+            position: absolute;
+            font-size: 0;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, 0%);
+            z-index: 10;
+        }
+
+        @keyframes main-heart-float {
+            0% { top: -20%; font-size: 0; }
+            100% { top: 50%; transform: translate(-50%, -50%); font-size: 40vh; }
+        }
+
+        @keyframes heart-vibrate {
+            0%, 100% { transform: translate(-50%, -50%); }
+            25% { transform: translate(-50%, -50%) rotate(-2deg); }
+            50% { transform: translate(-50%, -50%) rotate(2deg); }
+            75% { transform: translate(-50%, -50%) rotate(-2deg); }
+        }
+
+        .main-heart-repeat {
+            position: absolute;
+            font-size: 0;
+            top: -20%;
+            z-index: 10;
+            animation: main-heart-float-side 2s forwards;
+        }
+
+        @keyframes main-heart-float-side {
+            0% { top: -20%; font-size: 0; }
+            100% { top: 50%; transform: translate(-50%, -50%); font-size: 40vh; }
+        }
+
+        .explosion-particle {
+            position: absolute;
+            font-size: 10vh;
+            animation: final-explosion 2s ease-out forwards;
+            opacity: 1;
+        }
+
+        @keyframes final-explosion {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .volcano-heart {
+            position: absolute;
+            font-size: 5vh;
+            animation: volcano-up 2s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes volcano-up {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-30vh); opacity: 1; }
+            to { transform: translateY(130vh); opacity: 0; }
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0) translate(0, 0); opacity: 1; }
+            100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; }
+        }
+
+        .love-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            color: white;
+            font-size: 3em;
+            font-family: 'Dancing Script', cursive;
+            z-index: 1002;
+            transition: transform 1.3s ease-out, opacity 1.3s ease-out;
+            opacity: 0.8;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            user-select: none;
+        }
+
+        .love-message.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .heart-bubble {
+            position: absolute;
+            font-size: 20px;
+            color: pink;
+            opacity: 0;
+            animation: float-up 2s ease-out forwards;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        @keyframes float-up {
+            0% { transform: translate(-50%, -50%) translateY(20px) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -80%) translateY(-50px) scale(1); opacity: 0; }
+        }
+
+        .big-heart-explosion-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1003;
+        }
+
+        .big-explosion-heart {
+            position: absolute;
+            font-size: 40px;
+            color: red;
+            opacity: 0;
+            animation: big-heart-explode 1.5s ease-out forwards;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.7);
+        }
+
+        @keyframes big-heart-explode {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(var(--bx), var(--by)) scale(2.5); opacity: 0; }
+        }
+
+        .mini-heart {
+            position: absolute;
+            font-size: 20px;
+            color: pink;
+            opacity: 0;
+            animation: mini-heart-explode 1s ease-out forwards;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        @keyframes mini-heart-explode {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(var(--ex), var(--ey)) scale(1.5); opacity: 0; }
+        }
+    </style>
+
+    <script>
+        function checkPassword() {
+            var password = "07.10.2008";
+            var enteredPassword = prompt("Bu sayfayı görmek için şifreyi giriniz:");
+            if (enteredPassword === password) {
+                document.body.style.display = "flex";
+            } else {
+                alert("Yanlış şifre! Lütfen tekrar deneyin.");
+                window.location.reload(); 
+            }
+        }
+    </script>
+</head>
+<body style="display: none;" onload="checkPassword();">
+    <div class="background-image-container" id="bg-container"></div>
+    <div class="expand-box" id="expandbox">
+        <span id="button-text" style="font-size: clamp(1rem, 4vw, 2.5rem);">Seviyorum seni</span>
+    </div>
+    
+    <div class="message-container" id="messagecontainer">
+        Doğum günün kutlu olsun Tuanam
+        <span class="message-heart" id="heart1">💗</span>
+        <span class="message-heart" id="heart2">💕</span>
+        <span class="message-heart" id="heart3">💞</span>
+        <span class="message-heart" id="heart4">💖</span>
+    </div>
+
+    <div class="envelope" id="envelope">❤️</div>
+
+    <div class="message-overlay" id="messageOverlay">
+        <button class="close-button" id="closeButton">X</button>
+        <div class="message-content">
+            <p>
+                Doğum günün kutlu olsun kurban olduğum. Senin için gerçekten ne zahmet ne bir an yorulmak, sana bir şey yaparken o sevgin aşkın bana şifa oluyor.
+ Gerçekten Kurban olduğum sen benim bedenimin ruhumun parçasısın Allah seni benden beni senden bizi ondan ayırmasın. Seviyorum Seni Elhamdulillah. Allah yokluğunu göstermesin sana kavuşmayı nasip etsin Amin. Tüm günüm yorgun bitkin olsa, bu kod işleri beni hiç yormadı biliyor musun 9 saat aralıksız uğraştım bu proje 3 günümü aldı yine kısa sürdü açıkcası olur mu bilmiyordum ama Elhamdulillah Allah nasip etti olduruverdi Elhamdulillah. Cennetsin sen bana, bakışında buldum sevgime sevda, sevginde buldum kendim.
+ Mecazi bir aşkı gel Hakka çevirelim. Koyma beni senden gayrı sevgini ver her zaman, ayırma beni, bizi. Ne olur Yarabbi kavuştur bizi. Elhamdulillah diyelim o gün bu yaşlarda bunları yapardık diyelim hayalini kurduğumuz günleri yaşat bize Ey ALLAH'IM ne olur YARABBİM AMİN. Diyelimki Yarabbi Elhamdulillah bizi tanıştıran Allah'a hamdolsun. Elhamdulillah ELhamdulillah Elhamdulillah Ya Rabbi Elhamdulilah. Biriciğim sevdam sevdiğim güzelim yarim Kurban olduğum Tuanama 💞💞💞💓💕💗💖❣  
+            </p>
+        </div>
+    </div>
+
+    <div id="side-hearts" style="opacity: 0; transition: opacity 2s;">
+        <div class="heart-side heart-side-left" onclick="handleHeartClick(this)">💕</div>
+        <div class="heart-side heart-side-right" onclick="handleHeartClick(this)">💗</div>
+    </div>
+    <div id="main-heart">❤️</div>
+    <div id="volcano-container"></div>
+    <div id="explosion-container"></div>
+    <div id="repeat-explosion-container"></div>
+    <div class="love-message" id="loveMessage">Seviyorum seni</div>
+    <div class="heart-bubble-container" id="heartBubbleContainer"></div>
+    <div class="big-heart-explosion-container" id="bigHeartExplosionContainer"></div>
+    <div class="heart-explosion-container" id="heartExplosionContainer"></div>
+
+    <script>
+        const expandbox = document.getElementById('expandbox');
+        const messagecontainer = document.getElementById('messagecontainer');
+        const bgContainer = document.getElementById('bg-container');
+        const sideHeartsContainer = document.getElementById('side-hearts');
+        const mainHeart = document.getElementById('main-heart');
+        const volcanoContainer = document.getElementById('volcano-container');
+        const explosionContainer = document.getElementById('explosion-container');
+        const repeatExplosionContainer = document.getElementById('repeat-explosion-container');
+        const loveMessage = document.getElementById('loveMessage');
+        const heartBubbleContainer = document.getElementById('heartBubbleContainer');
+        const bigHeartExplosionContainer = document.getElementById('bigHeartExplosionContainer');
+        const heartExplosionContainer = document.getElementById('heartExplosionContainer');
+        let clickCount = 0;
+        let heartVolcanoInterval;
+        const hearts = ['💗', '💕', '💞', '💖'];
+
+        const clickableHearts = document.querySelectorAll('.message-heart');
+        const envelope = document.getElementById('envelope');
+        const messageOverlay = document.getElementById('messageOverlay');
+        const closeButton = document.getElementById('closeButton');
+        let correctClickCount = 0;
+
+        expandbox.addEventListener('click', () => {
+            clickCount++;
+
+            // Arka plan rengini yavaş yavaş beyaza dönüştür
+            if (clickCount <= 7) {
+                const colorValue = Math.round(clickCount * (255 / 7));
+                document.body.style.backgroundColor = `rgb(${colorValue}, ${colorValue}, ${colorValue})`;
+            }
+
+            if (clickCount < 7) {
+                const newSize = 150 + (clickCount * 15);
+                expandbox.style.width = `${newSize}px`;
+                expandbox.style.height = `${newSize}px`;
+                expandbox.style.transform = `scale(1.1)`;
+                setTimeout(() => {
+                    expandbox.style.transform = `scale(1)`;
+                }, 100);
+
+                createParticles();
+            } else if (clickCount === 7) {
+                expandbox.style.display = 'none';
+                bgContainer.classList.add('visible');
+                createHeartRain();
+                sideHeartsContainer.style.opacity = 1;
+                sideHeartsContainer.querySelectorAll('.heart-side').forEach(heart => heart.classList.add('visible'));
+                setTimeout(() => {
+                    messagecontainer.classList.add('visible');
+                    clickableHearts.forEach((heart, index) => {
+                        heart.addEventListener('click', () => handleMessageHeartClick(index));
+                    });
+                }, 1500);
+
+                setTimeout(() => {
+                    animateHeart();
+                }, 7000);
+            }
+        });
+
+        function handleMessageHeartClick(index) {
+            if (index === correctClickCount) {
+                clickableHearts[index].classList.add('sparkle');
+                correctClickCount++;
+
+                if (correctClickCount === clickableHearts.length) {
+                    setTimeout(() => {
+                        envelope.classList.add('visible');
+                    }, 500);
+                }
+            } else {
+                correctClickCount = 0;
+                clickableHearts.forEach(h => h.classList.remove('sparkle'));
+            }
+        }
+        
+        envelope.addEventListener('click', () => {
+            messageOverlay.classList.add('visible');
+        });
+
+        closeButton.addEventListener('click', () => {
+            messageOverlay.classList.remove('visible');
+            envelope.classList.remove('visible');
+            correctClickCount = 0;
+            clickableHearts.forEach(h => h.classList.remove('sparkle'));
+        });
+        
+        function createParticles() {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                const randomHeart = hearts[(Math.floor(Math.random() * hearts.length))];
+                particle.innerHTML = randomHeart;
+
+                const angle = Math.random() * 360;
+                const radius = Math.random() * 80 + 20;
+                const x = Math.cos(angle * Math.PI / 180) * radius;
+                const y = Math.sin(angle * Math.PI / 180) * radius;
+
+                particle.style.setProperty('--x', `${x}px`);
+                particle.style.setProperty('--y', `${y}px`);
+
+                expandbox.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+
+        function createHeartRain() {
+            const heartRainCount = 75;
+            for (let i = 0; i < heartRainCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = hearts[(Math.floor(Math.random() * hearts.length))];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(heart);
+            }
+        }
+
+        function animateHeart() {
+            mainHeart.style.animation = 'main-heart-float 2s forwards';
+
+            setTimeout(() => {
+                let bounceCount = 0;
+                let direction = 1;
+                const bounceInterval = setInterval(() => {
+                    if (bounceCount >= 2) {
+                        clearInterval(bounceInterval);
+                        mainHeart.style.animation = 'heart-vibrate 2s infinite ease-in-out';
+                        createHeartVolcano();
+                        return;
+                    }
+
+                    mainHeart.style.transform = `translate(-50%, -50%) translateX(${20 * direction}vw)`;
+                    direction *= -1;
+                    bounceCount++;
+                }, 500);
+
+            }, 2000);
+        }
+
+        function createHeartVolcano() {
+            heartVolcanoInterval = setInterval(() => {
+                for (let i = 0; i < 5; i++) {
+                    const heart = document.createElement('span');
+                    heart.classList.add('volcano-heart');
+                    heart.innerHTML = hearts[(Math.floor(Math.random() * hearts.length))];
+
+                    const angle = Math.random() * 360;
+                    const radius = Math.random() * 100 + 50;
+                    const x = Math.cos(angle * Math.PI / 180) * radius;
+                    const y = Math.sin(angle * Math.PI / 180) * radius;
+
+                    heart.style.setProperty('--dx', `${x}px`);
+                    heart.style.setProperty('--dy', `${y}px`);
+
+                    volcanoContainer.appendChild(heart);
+
+                    heart.style.left = '50%';
+                    heart.style.top = '50%';
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 2000);
+                }
+            }, 500);
+
+            setTimeout(() => {
+                clearInterval(heartVolcanoInterval);
+                const rect = mainHeart.getBoundingClientRect();
+                createFinalExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                mainHeart.remove();
+
+                setTimeout(() => {
+                    createTwoHeartsAndExplode();
+                }, 3000);
+            }, 5000);
+        }
+
+        function createTwoHeartsAndExplode() {
+            const heartLeft = document.createElement('div');
+            heartLeft.classList.add('main-heart-repeat');
+            heartLeft.innerHTML = '❤️';
+            heartLeft.style.left = '25%';
+            document.body.appendChild(heartLeft);
+
+            const heartRight = document.createElement('div');
+            heartRight.classList.add('main-heart-repeat');
+            heartRight.innerHTML = '❤️';
+            heartRight.style.left = '75%';
+            document.body.appendChild(heartRight);
+
+            setTimeout(() => {
+                const rectLeft = heartLeft.getBoundingClientRect();
+                createFinalExplosion(rectLeft.left + rectLeft.width / 2, rectLeft.top + rectLeft.height / 2);
+                heartLeft.remove();
+
+                const rectRight = heartRight.getBoundingClientRect();
+                createFinalExplosion(rectRight.left + rectRight.width / 2, rectRight.top + rectRight.height / 2);
+                heartRight.remove();
+
+            }, 2000);
+        }
+
+        function createFinalExplosion(xPos, yPos) {
+            const explosionCount = 300;
+            for (let i = 0; i < explosionCount; i++) {
+                const explosionHeart = document.createElement('span');
+                explosionHeart.classList.add('explosion-particle');
+                explosionHeart.innerHTML = hearts[(Math.floor(Math.random() * hearts.length))];
+
+                const angle = Math.random() * 360;
+                const radius = Math.random() * window.innerWidth / 1.2 + 200;
+                const x = Math.cos(angle * Math.PI / 180) * radius;
+                const y = Math.sin(angle * Math.PI / 180) * radius;
+
+                explosionHeart.style.setProperty('--dx', `${x}px`);
+                explosionHeart.style.setProperty('--dy', `${y}px`);
+                explosionHeart.style.fontSize = `${Math.random() * 5 + 5}vh`;
+
+                explosionHeart.style.left = `${xPos}px`;
+                explosionHeart.style.top = `${yPos}px`;
+
+                document.body.appendChild(explosionHeart);
+
+                setTimeout(() => {
+                    explosionHeart.remove();
+                }, 2000);
+            }
+        }
+
+        function handleHeartClick(clickedHeart) {
+            clickedHeart.classList.add('active');
+            setTimeout(() => {
+                clickedHeart.classList.remove('active');
+            }, 100);
+
+            const randomNumber = Math.random();
+            const heartRect = clickedHeart.getBoundingClientRect();
+            const centerX = heartRect.left + heartRect.width / 2;
+            const centerY = heartRect.top + heartRect.height / 2;
+
+            if (randomNumber < 0.5) { 
+                loveMessage.style.left = `${centerX}px`;
+                loveMessage.style.top = `${centerY}px`;
+                loveMessage.classList.add('show');
+                setTimeout(() => {
+                    loveMessage.classList.remove('show');
+                }, 1800);
+            } else if (randomNumber < 0.75) {
+                createHeartBubbles(centerX, centerY);
+            } else {
+                createFinalExplosion(centerX, centerY);
+            }
+        }
+
+        function createHeartBubbles(x, y) {
+            for (let i = 0; i < 10; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('heart-bubble');
+                bubble.innerHTML = '❤️';
+                bubble.style.left = `${x}px`;
+                bubble.style.top = `${y}px`;
+                heartBubbleContainer.appendChild(bubble);
+                setTimeout(() => {
+                    bubble.remove();
+                }, 2000);
+            }
+        }
+
+        function createMiniHeartExplosion(x, y) {
+            for (let i = 0; i < 20; i++) {
+                const miniHeart = document.createElement('div');
+                miniHeart.classList.add('mini-heart');
+                miniHeart.innerHTML = '❤️';
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 80 + 20;
+                const ex = x + Math.cos(angle * Math.PI / 180) * distance - 10;
+                const ey = y + Math.sin(angle * Math.PI / 180) * distance - 10;
+                miniHeart.style.setProperty('--ex', `${ex}px`);
+                miniHeart.style.setProperty('--ey', `${ey}px`);
+                miniHeart.style.left = `${x}px`;
+                miniHeart.style.top = `${y}px`;
+                heartExplosionContainer.appendChild(miniHeart);
+                setTimeout(() => {
+                    miniHeart.remove();
+                }, 1000);
+            }
+        }
+
+        function createBigHeartExplosion(x, y) {
+            for (let i = 0; i < 15; i++) {
+                const bigHeart = document.createElement('div');
+                bigHeart.classList.add('big-explosion-heart');
+                bigHeart.innerHTML = '❤️';
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 100 + 50;
+                const bx = x + Math.cos(angle * Math.PI / 180) * distance - 20;
+                const by = y + Math.sin(angle * Math.PI / 180) * distance - 20;
+                bigHeart.style.setProperty('--bx', `${bx}px`);
+                bigHeart.style.setProperty('--by', `${by}px`);
+                bigHeart.style.left = `${x}px`;
+                bigHeart.style.top = `${y}px`;
+                bigHeartExplosionContainer.appendChild(bigHeart);
+                setTimeout(() => {
+                    bigHeart.remove();
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
